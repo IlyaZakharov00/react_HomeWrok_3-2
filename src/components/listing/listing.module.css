@@ -29,6 +29,10 @@ body {
 }
 
 
+.threeDot {
+    cursor: pointer;
+}
+
 /* Progress Bar */
 
 .progress {

@@ -3,6 +3,7 @@ import styles from "./listing.module.css"
 
 export const Listing = (proops) => {
 const {items} = proops
+let titles = {}
 
 const getPrice = (price, currency_code)=>{
   let symbol;
@@ -33,6 +34,28 @@ const getLevel = (quantity)=>{
   return class_
 }
 
+const showFullTitle = (e, id)=>{
+  let fullTitle = titles[id]
+  e.currentTarget.textContent = fullTitle
+}
+
+const smallTitle = (title, id)=>{
+  titles[id] = title;
+  
+  if(title.length > 50){
+    let fiftySymbols = [];
+
+    for (let i = 0; i < 50; i++) {
+      fiftySymbols.push(title[i])
+    }
+
+    let threeDot = <span className={styles['threeDot']} onClick={(e)=>{showFullTitle(e, id)}}>...</span>
+    return (<>{fiftySymbols.join('')} {threeDot}</>)  
+  } 
+  return title
+}
+
+
 return (
   <div className={styles["item-list"]}>
 
@@ -40,7 +63,7 @@ return (
       
       if(!item.title) return null;
       
-      const {title, price, quantity, currency_code} = item
+      const {title, price, quantity, currency_code, listing_id} = item
 
       return(      
       <div className={styles["item"]} key={Math.random()}>
@@ -50,7 +73,7 @@ return (
           </a>
         </div>
         <div className={styles["item-details"]}>
-          <p className={styles["item-title"]}>{title}</p>
+          <p className={styles["item-title"]}>{smallTitle(title, listing_id)}</p>
           <p className={styles["item-price"]}>{getPrice(price, currency_code)}</p>
           <p className={[styles["item-quantity"], styles[getLevel(quantity)]].join(" ")}>{quantity} left</p>
         </div>
